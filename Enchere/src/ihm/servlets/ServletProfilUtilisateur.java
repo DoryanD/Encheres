@@ -1,6 +1,8 @@
 package ihm.servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +34,8 @@ public class ServletProfilUtilisateur extends HttpServlet
     	}
 		else
 		{
-			this.getServletContext().getRequestDispatcher("/PageProfilUtilisateur").forward(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageProfilUtilisateur");
+			rd.forward(request, response);
 		}
 	}
 
@@ -41,7 +44,6 @@ public class ServletProfilUtilisateur extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-
 		doGet(request, response);
 	}
 

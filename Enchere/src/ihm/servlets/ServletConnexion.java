@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -68,18 +69,21 @@ public class ServletConnexion extends HttpServlet
     				}
     				else
     				{
-    					this.getServletContext().getRequestDispatcher("/PageConnexion").forward(request, response);
+    					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
+    					rd.forward(request, response);
     				}
 				}
     		}
     		else
     		{
-    			this.getServletContext().getRequestDispatcher("/PageConnexion").forward(request, response);
+    			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
+    			rd.forward(request, response);
     		}
     	}
     	else
     	{
-    		this.getServletContext().getRequestDispatcher("/PageConnexion").forward(request, response);
+    		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
+    		rd.forward(request, response);
     	}
 	}
 

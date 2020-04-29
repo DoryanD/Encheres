@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,7 +37,8 @@ public class ServletOublieMDP extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		this.getServletContext().getRequestDispatcher("/PageOublieMail").forward(request, response);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageOublieMail");
+		rd.forward(request, response);
 	}
 
 	/**
@@ -53,36 +55,31 @@ public class ServletOublieMDP extends HttpServlet
 			{
 				if(utilisateur.getEmail().equals(request.getAttribute("email")))
 				{
-					  String to = (String) request.getAttribute("email");
-				      String from = "floch.titouan@outlook.com";
-				      String host = "localhost";
-				      Properties properties = System.getProperties();
-				      properties.setProperty("mail.smtp.host", host);
-				      Session session = Session.getDefaultInstance(properties);
-					  try 
-					  {
-				         MimeMessage message = new MimeMessage(session);
-				         message.setFrom(new InternetAddress(from));
-				         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-				         message.setSubject("Oublie de mot de passe");
-				         message.setText("Voici votre mot de passe : " + utilisateur.getMot_de_passe());
-				         Transport.send(message);
-				         System.out.println("Email envoyé");
-				      } 
-					 catch (AddressException e) 
-					 {
+					/*String to = (String) request.getAttribute("email");
+				    String from = "floch.titouan@outlook.com";
+				    String host = "localhost";
+				    Properties properties = System.getProperties();
+				    properties.setProperty("mail.smtp.host", host);
+				    Session session = Session.getDefaultInstance(properties);
+				    MimeMessage message = new MimeMessage(session);
+			        try {
+						message.setFrom(new InternetAddress(from));
+						message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+						message.setSubject("Oublie de mot de passe");
+						message.setText("Voici votre mot de passe : " + utilisateur.getMot_de_passe());
+						Transport.send(message);
+					} catch (Exception e)
+			        {
 						e.printStackTrace();
-					 } 
-					 catch (javax.mail.MessagingException e) 
-					 {
-						e.printStackTrace();
-					 }
+					}*/
+			        System.out.println("Email envoyé");
 				}
 			}
     	}
 		else
 		{
-			this.getServletContext().getRequestDispatcher("/PageOublieMail").forward(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageOublieMail");
+			rd.forward(request, response);
 		}
 	}
 

@@ -8,6 +8,7 @@
 
 <!--Bootsrap 4 CDN-->
 <link rel="stylesheet" href="Assets/bootstrap/css/bootstrap.min.css">
+<script src="Assets/boostrap/js/bootstrap.min.js"></script>
 
 <!--Fontawesome CDN-->
 <link rel="stylesheet"

@@ -1,6 +1,8 @@
 package ihm.servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,11 +31,13 @@ public class ServletAccueil extends HttpServlet {
     	HttpSession session = request.getSession();
     	if(session.getAttribute("pseudo")!=null) 
     	{
-    		this.getServletContext().getRequestDispatcher("/LesEncheresConnecte").forward(request, response);
+    		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/LesEncheresConnecte.jsp");
+            rd.forward(request, response);
     	}
     	else 
     	{	
-    		this.getServletContext().getRequestDispatcher("/LesEncheresDeconnecte").forward(request, response);
+    		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/LesEncheresDeconnecte.jsp");
+            rd.forward(request, response);
     	}
 	}
 

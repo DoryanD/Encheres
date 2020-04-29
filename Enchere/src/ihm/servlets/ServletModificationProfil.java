@@ -1,6 +1,8 @@
 package ihm.servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -41,7 +43,8 @@ public class ServletModificationProfil extends HttpServlet
 			request.setAttribute("Email", session.getAttribute("Email"));
 			request.setAttribute("Rue", session.getAttribute("Rue"));
 			request.setAttribute("ville", session.getAttribute("ville"));
-			this.getServletContext().getRequestDispatcher("/PageModificationProfil").forward(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageModificationProfil");
+			rd.forward(request, response);
 		}
 	}
 	/**
@@ -150,7 +153,8 @@ public class ServletModificationProfil extends HttpServlet
 				{
 					e.printStackTrace();
 				}
-				this.getServletContext().getRequestDispatcher("/PageProfilUtilisateur").forward(request, response);
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageProfilUtilisateur");
+				rd.forward(request, response);
 			}
 		}
 	}

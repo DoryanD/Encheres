@@ -1,6 +1,8 @@
 package ihm.servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +26,8 @@ public class ServletCreationCompte extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.getServletContext().getRequestDispatcher("/PageCreationProfil").forward(request, response);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageCreationProfil");
+		rd.forward(request, response);
 	}
 
 	/**

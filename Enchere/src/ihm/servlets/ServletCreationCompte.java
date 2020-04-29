@@ -26,7 +26,7 @@ public class ServletCreationCompte extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageCreationProfil");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageCreationProfil.jsp");
 		rd.forward(request, response);
 	}
 
@@ -37,7 +37,6 @@ public class ServletCreationCompte extends HttpServlet
 	{
 		HttpSession session = request.getSession();
 		
-		int id = Integer.parseInt(request.getParameter("id"));
 		String pseudo = (String) request.getParameter("pseudo");
 		String prenom = (String) request.getParameter("prenom");
 		String tel = (String) request.getParameter("tel");
@@ -47,11 +46,14 @@ public class ServletCreationCompte extends HttpServlet
 		String Email = (String) request.getParameter("Email");
 		String Rue = (String) request.getParameter("Rue");
 		String ville = (String) request.getParameter("ville");
+		String mdpconfirm = (String) request.getParameter("mdpconfirm");
+
 		Boolean admin = false;
 		int credit = 0;
-		if(mdp.equals(request.getParameter("mdpconfirm")))
+		
+		if(mdp.equals(mdpconfirm))
 		{
-			Utilisateur UtiCreer = new Utilisateur(id,pseudo,nom,prenom,Email,tel,Rue,cp,ville,mdp,credit,admin);
+			Utilisateur UtiCreer = new Utilisateur(pseudo,nom,prenom,Email,tel,Rue,cp,ville,mdp,credit,admin);
 			UtilisateursManager instance = UtilisateursManager.getInstance();
 			try
 			{

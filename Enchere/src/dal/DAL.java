@@ -26,9 +26,8 @@ public class DAL
         try
         {
         	Context ctx = new InitialContext();
-        	DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/pool_suivis_repas");
+        	DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/pool_encheres");
         	this.con = ds.getConnection();
-
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -67,6 +66,7 @@ public class DAL
     {
         ResultSet ret = null;
         PreparedStatement state;
+        System.out.println(query);
         try
         {
             state = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

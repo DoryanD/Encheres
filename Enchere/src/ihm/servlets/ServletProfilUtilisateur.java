@@ -30,11 +30,11 @@ public class ServletProfilUtilisateur extends HttpServlet
 		HttpSession session = request.getSession();
 		if(session.getAttribute("pseudo") ==null) 
     	{
-			response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+			response.sendRedirect("Accueil");
     	}
 		else
 		{
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageProfilUtilisateur");
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageProfilUtilisateur.jsp");
 			rd.forward(request, response);
 		}
 	}

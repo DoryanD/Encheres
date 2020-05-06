@@ -1,6 +1,9 @@
 package ihm.servlets;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,18 +50,28 @@ public class ServletCreationCompte extends HttpServlet
 		String Rue = (String) request.getParameter("Rue");
 		String ville = (String) request.getParameter("ville");
 		String mdpconfirm = (String) request.getParameter("mdpconfirm");
-
 		Boolean admin = false;
-		int credit = 0;
-		
-		if(mdp.equals(mdpconfirm))
+		int credit = 1000;
+		UtilisateursManager instance = UtilisateursManager.getInstance();
+		List<Utilisateur> laListe = new ArrayList<>();
+		laListe = instance.selectAll();
+		Boolean existe = false ;
+		ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(pseudo) > 1, 1, 0) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "'");
+		existe = result.getInt("result") == 1;
+		if(!existe)
 		{
-			Utilisateur UtiCreer = new Utilisateur(pseudo,nom,prenom,Email,tel,Rue,cp,ville,mdp,credit,admin);
-			UtilisateursManager instance = UtilisateursManager.getInstance();
-			try
+			ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(email) > 1, 1, 0) as result FROM UTILISATEURS WHERE email = '" + Email + "'");
+			existe = result.getInt("result") == 1;
+		}
+		if(!existe)
+		{
+			if(mdp.equals(mdpconfirm))
 			{
-				instance.add(UtiCreer);
-			} 
+				Utilisateur UtiCreer = new Utilisateur(pseudo,nom,prenom,Email,tel,Rue,cp,ville,mdp,credit,admin);
+				try
+				{
+					instance.add(UtiCreer);
+				} 
 			catch (BLLException e) 
 			{
 				e.printStackTrace();

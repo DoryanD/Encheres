@@ -46,7 +46,7 @@
 					<h3>ENI-Enchères</h3>
 				</div>
 				<div class="card-body">
-					<form action="seConnecter" method="post">
+					<form action="Accueil" method="post">
 						<div class="input-group form-group">
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -75,7 +75,7 @@
 						Don't have an account?<a href="ServletCreationCompte">Sign Up</a>
 					</div>
 					<div class="d-flex justify-content-center">
-						<a href="">Forgot your password?</a>
+						<a href="OublieMDP">Forgot your password?</a>
 					</div>
 				</div>
 			</div>

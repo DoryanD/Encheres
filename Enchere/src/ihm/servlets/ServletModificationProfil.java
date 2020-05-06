@@ -1,8 +1,9 @@
 package ihm.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -43,8 +44,7 @@ public class ServletModificationProfil extends HttpServlet
 			request.setAttribute("Email", session.getAttribute("Email"));
 			request.setAttribute("Rue", session.getAttribute("Rue"));
 			request.setAttribute("ville", session.getAttribute("ville"));
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageModificationProfil");
-			rd.forward(request, response);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/PageModificationProfil.jsp").forward(request, response);
 		}
 	}
 	/**
@@ -52,7 +52,7 @@ public class ServletModificationProfil extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		int modifier = 0;
+		boolean modifier = false;
 		HttpSession session = request.getSession();
     	if(session.getAttribute("pseudo") !=null ) 
     	{
@@ -70,47 +70,11 @@ public class ServletModificationProfil extends HttpServlet
 			String Email = (String) session.getAttribute("Email");
 			String Rue = (String) session.getAttribute("Rue");
 			String ville = (String) session.getAttribute("ville");
-			if(id != request.getParameter("id"))
+			if(id != request.getParameter("id") || pseudo != request.getParameter("pseudo") || prenom != request.getParameter("prenom") || tel != request.getParameter("tel") || cp != request.getParameter("cp") || mdpActuel != request.getParameter("mdp") || nom != request.getParameter("nom") || Email != request.getParameter("Email") || Rue != request.getParameter("Rue") || ville != request.getParameter("ville"))
 			{
-				modifier = 1;
+				modifier = true;
 			}
-			if(pseudo != request.getParameter("pseudo"))
-			{
-				modifier = 1;
-			}
-			if(prenom != request.getParameter("prenom"))
-			{
-				modifier = 1;
-			}
-			if(tel != request.getParameter("tel"))
-			{
-				modifier = 1;
-			}
-			if(cp != request.getParameter("cp"))
-			{
-				modifier = 1;
-			}
-			if(mdpActuel != request.getParameter("mdp"))
-			{
-				modifier = 1;
-			}
-			if(nom != request.getParameter("nom"))
-			{
-				modifier = 1;
-			}
-			if(Email != request.getParameter("Email"))
-			{
-				modifier = 1;
-			}
-			if(Rue != request.getParameter("Rue"))
-			{
-				modifier = 1;
-			}
-			if(ville != request.getParameter("ville"))
-			{
-				modifier = 1;
-			}
-			if(modifier == 1)
+			if(modifier == true)
 			{
 				id = (String) request.getParameter("id");
 				pseudo = (String) request.getParameter("pseudo");
@@ -122,39 +86,53 @@ public class ServletModificationProfil extends HttpServlet
 				Email = (String) request.getParameter("Email");
 				Rue = (String) request.getParameter("Rue");
 				ville = (String) request.getParameter("ville");
-				session.setAttribute("id", request.getParameter("id"));
-				session.setAttribute("pseudo", request.getParameter("pseudo"));
-				session.setAttribute("prenom", request.getParameter("prenom"));
-				session.setAttribute("tel", request.getParameter("tel"));
-				session.setAttribute("cp", request.getParameter("cp"));
-				session.setAttribute("mdp", request.getParameter("mdp"));
-				session.setAttribute("nom", request.getParameter("nom"));
-				session.setAttribute("Email", request.getParameter("Email"));
-				session.setAttribute("Rue", request.getParameter("Rue"));
-				session.setAttribute("ville", request.getParameter("ville"));
-				session.setAttribute("credit", session.getAttribute("credit"));
 				int credit = (int) session.getAttribute("credit");
+				session.setAttribute("id", id);
+				session.setAttribute("pseudo", pseudo);
+				session.setAttribute("prenom", prenom);
+				session.setAttribute("tel", tel);
+				session.setAttribute("cp", cp);
+				session.setAttribute("mdp", mdp);
+				session.setAttribute("nom", nom);
+				session.setAttribute("Email", Email);
+				session.setAttribute("Rue", Rue);
+				session.setAttribute("ville", ville);
+				session.setAttribute("credit", credit);
 				int id2 = Integer.parseInt(request.getParameter("id"));
 				session.setAttribute("administrateur", session.getAttribute("administrateur"));
 				Boolean administrateur = (Boolean) session.getAttribute("administrateur");
 				Utilisateur UtiModifier = new Utilisateur(id2,pseudo,nom,prenom,Email,tel,Rue,cp,ville,mdp,credit,administrateur);
 				UtilisateursManager instance = UtilisateursManager.getInstance();
-				try 
+				List<Utilisateur> laListe = new ArrayList<>();
+				laListe = instance.selectAll();
+				Boolean existe = false ;
+				ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(pseudo) > 1, 1, 0) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "' AND no_utilisateur != '"+ id2 +"'");
+				existe = result.getInt("result") == 1;
+				if(!existe)
 				{
-					instance.update(UtiModifier);
-					Cookie cookieMDP = new Cookie("mdp",mdp);
-					Cookie cookiePseudo = new Cookie("pseudo",pseudo);
-					cookieMDP.setMaxAge(1000000000);
-					cookiePseudo.setMaxAge(1000000000);
-					response.addCookie(cookieMDP);
-					response.addCookie(cookiePseudo);
-				} 
-				catch (BLLException e) 
-				{
-					e.printStackTrace();
+					ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(email) > 1, 1, 0) as result FROM UTILISATEURS WHERE email = '" + Email + "'AND no_utilisateur != '"+ id2 +"'");
+					existe = result.getInt("result") > 1;
 				}
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageProfilUtilisateur");
-				rd.forward(request, response);
+
+				if(!existe)
+				{
+					try 
+					{
+						instance.update(UtiModifier);
+						Cookie cookieMDP = new Cookie("mdp",mdp);
+						Cookie cookiePseudo = new Cookie("pseudo",pseudo);
+						cookieMDP.setMaxAge(1000000000);
+						cookiePseudo.setMaxAge(1000000000);
+						response.addCookie(cookieMDP);
+						response.addCookie(cookiePseudo);
+					} 
+					catch (BLLException e) 
+					{
+						e.printStackTrace();
+					}
+				}
+				
+				this.getServletContext().getRequestDispatcher("/WEB-INF/PageProfilUtilisateur.jsp").forward(request, response);
 			}
 		}
 	}

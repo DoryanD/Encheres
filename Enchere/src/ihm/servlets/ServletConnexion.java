@@ -65,7 +65,7 @@ public class ServletConnexion extends HttpServlet
     					session.setAttribute("ville", utilisateur.getVille());
     					session.setAttribute("credit", utilisateur.getCredit());
     					session.setAttribute("administrateur", utilisateur.getAdministrateur());
-    					response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+    					response.sendRedirect("/Encheres/ihm.servlets/ServletAccueil");
     				}
     				else
     				{

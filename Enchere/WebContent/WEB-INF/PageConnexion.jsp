@@ -14,10 +14,6 @@
 	href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
 	integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
 	crossorigin="anonymous">
-
-<!--Custom styles
-	<link rel="stylesheet" href="Assets/css/seConnecter.css">
-	-->
 </head>
 <body>
 
@@ -46,12 +42,12 @@
 					<h3>ENI-Enchères</h3>
 				</div>
 				<div class="card-body">
-					<form action="Accueil" method="post">
+					<form action="/Enchere/Connexion" method="post">
 						<div class="input-group form-group">
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" class="form-control" placeholder="username" required name ="pseudo" id="pseudo" value="<%=cookieSearchValue%>">
+							<input type="text" class="form-control" placeholder="username" required name="pseudo" id="pseudo" value="<%=cookieSearchValue%>">
 						</div>
 						<div class="input-group form-group">
 							<div class="input-group-prepend">
@@ -67,7 +63,6 @@
 						<div class="form-group">
 							<input type="submit" value="Login" class="btn float-right">
 						</div>
-						
 					</form>
 				</div>
 				<div class="card-footer">

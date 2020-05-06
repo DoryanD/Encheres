@@ -15,7 +15,7 @@
     <h1><a href="Accueil" class="nav-link">ENI - Enchères</a></h1>
     <a href="Accueil" class="nav-link">Enchères</a>
     <a href="VendreArticle" class="nav-link">Vendre un article</a>
-    <a href="AffichageInfosUtilisateur?id=${utilisateur }" class="nav-link">Mon profil</a>
+    <a href="AffichageInfosUtilisateur?id=${utilisateur}" class="nav-link">Mon profil</a>
     <a href="ServletDeconnexion" class="nav-link">Déconnexion</a>
 </nav>
 <div class="jumbotron text-center">

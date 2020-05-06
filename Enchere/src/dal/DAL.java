@@ -66,7 +66,6 @@ public class DAL
     {
         ResultSet ret = null;
         PreparedStatement state;
-        System.out.println(query);
         try
         {
             state = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

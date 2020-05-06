@@ -27,64 +27,65 @@ public class ServletConnexion extends HttpServlet
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-	{
-		Utilisateur unUti = new Utilisateur();
+	{		
 		HttpSession session = request.getSession();
-    	if(request.getAttribute("pseudo") != null)
-    	{
-    		request.setAttribute("pseudo", request.getAttribute("pseudo") );
-    		String pseudo = (String) request.getAttribute("pseudo");
-    		if(request.getAttribute("mdp") != null)
-    		{
-    			String mdp = (String) request.getAttribute("mdp");
-    			UtilisateursManager instance = UtilisateursManager.getInstance();
-    			List<Utilisateur> listeUtilisateur = new ArrayList<>();
-    			listeUtilisateur = instance.selectAll();
-    			for (Utilisateur utilisateur : listeUtilisateur)
-    			{
-    				if(utilisateur.getPseudo() == pseudo && utilisateur.getMot_de_passe() == mdp)
-    				{
-    					if(request.getAttribute("remember").equals(true))
-    					{
-    						Cookie cookieMDP = new Cookie("mdp",utilisateur.getMot_de_passe());
-    						Cookie cookiePseudo = new Cookie("pseudo",utilisateur.getPseudo());
-    						cookieMDP.setMaxAge(1000000000);
-    						cookiePseudo.setMaxAge(1000000000);
-    						response.addCookie(cookieMDP);
-    						response.addCookie(cookiePseudo);
-    					}
-    					session.setAttribute("id", utilisateur.GetId());
-    					session.setAttribute("pseudo", utilisateur.getPseudo());
-    					session.setAttribute("prenom", utilisateur.getPrenom());
-    					session.setAttribute("tel", utilisateur.getTelephone());
-    					session.setAttribute("cp", utilisateur.getCode_postal());
-    					session.setAttribute("mdp", utilisateur.getMot_de_passe());
-    					session.setAttribute("nom", utilisateur.getNom());
-    					session.setAttribute("Email", utilisateur.getEmail());
-    					session.setAttribute("Rue", utilisateur.getRue());
-    					session.setAttribute("ville", utilisateur.getVille());
-    					session.setAttribute("credit", utilisateur.getCredit());
-    					session.setAttribute("administrateur", utilisateur.getAdministrateur());
-    					response.sendRedirect("/Enchere/Accueil");
-    				}
-    				else
-    				{
-    					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
-    					rd.forward(request, response);
-    				}
+		if(request.getParameter("pseudo") != null)
+		{
+			request.setAttribute("pseudo", request.getParameter("pseudo") );
+			String pseudo = (String) request.getParameter("pseudo");
+			if(request.getParameter("mdp") != null)
+			{
+				String mdp = (String) request.getParameter("mdp");
+				UtilisateursManager instance = UtilisateursManager.getInstance();
+				List<Utilisateur> listeUtilisateur = new ArrayList<>();
+				listeUtilisateur = instance.selectAll();
+				for (Utilisateur utilisateur : listeUtilisateur)
+				{
+					if(utilisateur.getPseudo().equals(pseudo) && utilisateur.getMot_de_passe().equals(mdp))
+					{
+						if(request.getParameter("remember") != null && request.getParameter("remember") == "on")
+						{
+							Cookie cookieMDP = new Cookie("mdp",utilisateur.getMot_de_passe());
+							Cookie cookiePseudo = new Cookie("pseudo",utilisateur.getPseudo());
+							cookieMDP.setMaxAge(1000000000);
+							cookiePseudo.setMaxAge(1000000000);
+							response.addCookie(cookieMDP);
+							response.addCookie(cookiePseudo);
+						}
+						session.setAttribute("id", utilisateur.GetId());
+						session.setAttribute("pseudo", utilisateur.getPseudo());
+						session.setAttribute("prenom", utilisateur.getPrenom());
+						session.setAttribute("tel", utilisateur.getTelephone());
+						session.setAttribute("cp", utilisateur.getCode_postal());
+						session.setAttribute("mdp", utilisateur.getMot_de_passe());
+						session.setAttribute("nom", utilisateur.getNom());
+						session.setAttribute("Email", utilisateur.getEmail());
+						session.setAttribute("Rue", utilisateur.getRue());
+						session.setAttribute("ville", utilisateur.getVille());
+						session.setAttribute("credit", utilisateur.getCredit());
+						session.setAttribute("administrateur", utilisateur.getAdministrateur());
+						
+						RequestDispatcher rd = request.getRequestDispatcher("/Enchere/Accueil");
+						rd.forward(request, response);
+					}
+					else
+					{
+						RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
+						rd.forward(request, response);
+					}
 				}
-    		}
-    		else
-    		{
-    			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
-    			rd.forward(request, response);
-    		}
-    	}
-    	else
-    	{
-    		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
-    		rd.forward(request, response);
-    	}
+			}
+			else
+			{
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
+				rd.forward(request, response);
+			}
+		}
+		else
+		{
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 	/**

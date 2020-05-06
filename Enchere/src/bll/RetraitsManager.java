@@ -17,7 +17,7 @@ public class RetraitsManager extends BaseManager<Retrait, RetraitsDAO>
 	
 	private RetraitsManager()
 	{
-		this.managerDAO = new RetraitsDAO();
+		this.setManagerDAO(new RetraitsDAO());
 	}
 
 	@Override

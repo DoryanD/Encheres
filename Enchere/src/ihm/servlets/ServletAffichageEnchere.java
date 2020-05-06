@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -73,10 +74,12 @@ public class ServletAffichageEnchere extends HttpServlet
 			request.setAttribute("Ville", LeRetrait.getVille());
 			request.setAttribute("Vendeur", lutilisateur.getPseudo());
 			/* AFFICHER PAGE AFFICHAGE ENCHERE */
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageAffichageEnchere.jsp");
+			rd.forward(request, response);
 		}
 		else
 		{
-			/* REDIRECTION VERS ACCUEIL */
+			response.sendRedirect("/Enchere/Accueil");
 		}
 	}
 
@@ -111,12 +114,13 @@ public class ServletAffichageEnchere extends HttpServlet
 			}
 			else
 			{
-				/*Rediriger sur cette servlet en get*/
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageAffichageEnchere.jsp");
+				rd.forward(request, response);
 			}
 		}
 		else
 		{
-			/*Rediriger vers accueil*/
+			response.sendRedirect("/Enchere/Accueil");
 		}
 	}
 

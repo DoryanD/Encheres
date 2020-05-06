@@ -17,7 +17,7 @@ public class EncheresManager extends BaseManager<Enchere, EncheresDAO>
 	
 	private EncheresManager()
 	{
-		this.managerDAO = new EncheresDAO();
+		this.setManagerDAO(new EncheresDAO());
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class ArticlesVendusManager extends BaseManager<ArticlesVendu, ArticlesVe
 	
 	private ArticlesVendusManager()
 	{
-		this.managerDAO = new ArticlesVendusDAO();
+		this.setManagerDAO(new ArticlesVendusDAO());
 	}
 
 	@Override

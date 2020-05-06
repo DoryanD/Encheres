@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -81,7 +82,7 @@ public class ServletModificationEnchere extends HttpServlet
 		}
 		else
 		{
-			response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+			response.sendRedirect("/Enchere/Accueil");
 		}
 	}
 
@@ -126,7 +127,7 @@ public class ServletModificationEnchere extends HttpServlet
 				try 
 				{
 					deuxiemeManager.update(unRetrait);
-					response.sendRedirect("/Encheres/ihm.servlets/AffichageEnchere");
+					response.sendRedirect("/Enchere/AffichageEnchere");
 				} 
 				catch (BLLException e) 
 				{
@@ -140,7 +141,7 @@ public class ServletModificationEnchere extends HttpServlet
 		}
 		else
 		{
-			/*Rediriger vers accueil*/
+			response.sendRedirect("/Enchere/AffichageEnchere");
 		}
 	}
 

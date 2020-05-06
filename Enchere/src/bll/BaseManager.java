@@ -11,12 +11,12 @@ import utils.Exceptions.BLLException;
 public abstract class BaseManager<T extends SQLObject, D extends BaseDAO<T>> implements IManager<T>
 {
 
-	protected D managerDAO;
+	private D managerDAO;
 
 	@Override
 	public List<T> selectAll()
 	{
-		return managerDAO.ParseToList(managerDAO.SelectAll());
+		return getManagerDAO().ParseToList(getManagerDAO().SelectAll());
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public abstract class BaseManager<T extends SQLObject, D extends BaseDAO<T>> imp
 		ResultSet temp;
 		Integer ret = null;
 		if(isObjectCorrect(object))
-			temp = managerDAO.Insert(object);
+			temp = getManagerDAO().Insert(object);
         else
             throw new BLLException("Erreur d'insertion : toutes les variables doivent être renseignées");
 		
@@ -40,24 +40,32 @@ public abstract class BaseManager<T extends SQLObject, D extends BaseDAO<T>> imp
 	@Override
 	public void update(T object) throws BLLException {
 		if(isObjectCorrect(object))
-			managerDAO.Update(object);
+			getManagerDAO().Update(object);
         else
             throw new BLLException("Erreur d'insertion : toutes les variables doivent être renseignées");		
 	}
 
 	@Override
-	public void delete(Integer index) { managerDAO.Delete(index); }
+	public void delete(Integer index) { getManagerDAO().Delete(index); }
 
 	@Override
 	public abstract boolean isObjectCorrect(T object);
 	
 	@Override
 	public T get(Integer index) {
-		ResultSet rs = managerDAO.SelectById(index);
-        return managerDAO.ParseToList(rs).get(0);
+		ResultSet rs = getManagerDAO().SelectById(index);
+        return getManagerDAO().ParseToList(rs).get(0);
 	}
 
 	@Override
-	public void closeConnection() { managerDAO.CloseConnection(); }
+	public void closeConnection() { getManagerDAO().CloseConnection(); }
+
+	public D getManagerDAO() {
+		return managerDAO;
+	}
+
+	public void setManagerDAO(D managerDAO) {
+		this.managerDAO = managerDAO;
+	}
 
 }

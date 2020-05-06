@@ -2,6 +2,7 @@ package ihm.servlets;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,12 +57,22 @@ public class ServletCreationCompte extends HttpServlet
 		List<Utilisateur> laListe = new ArrayList<>();
 		laListe = instance.selectAll();
 		Boolean existe = false ;
-		ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(pseudo) > 1, 1, 0) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "'");
-		existe = result.getInt("result") == 1;
+		ResultSet result = instance.getManagerDAO().DoSQuery("SELECT COUNT(pseudo) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "'");
+		try {
+			existe = result.getInt("result") > 1;
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		if(!existe)
 		{
-			ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(email) > 1, 1, 0) as result FROM UTILISATEURS WHERE email = '" + Email + "'");
-			existe = result.getInt("result") == 1;
+			ResultSet result2 = instance.getManagerDAO().DoSQuery("SELECT COUNT(email) as result FROM UTILISATEURS WHERE email = '" + Email + "'");
+			try {
+				existe = result2.getInt("result") > 1;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if(!existe)
 		{
@@ -71,6 +82,7 @@ public class ServletCreationCompte extends HttpServlet
 				try
 				{
 					instance.add(UtiCreer);
+					response.sendRedirect("/Enchere/Accueil");
 				} 
 			catch (BLLException e) 
 			{
@@ -81,4 +93,5 @@ public class ServletCreationCompte extends HttpServlet
 		
 	}
 
+}
 }

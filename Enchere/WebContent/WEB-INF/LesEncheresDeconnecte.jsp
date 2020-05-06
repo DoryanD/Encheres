@@ -17,7 +17,7 @@
 
 <nav class="d-flex justify-content-between text-dark align-items-center p-3 bg-light">
 		<h1><a href="Accueil" class="nav-link" >ENI - Enchères</a></h1>
-	    <a href="seConnecter" class="nav-link">S'inscrire - Se connecter</a>
+	    <a href="Connexion" class="nav-link">S'inscrire - Se connecter</a>
 </nav>
 <div class="jumbotron text-center">
 	<h1>Liste des enchères</h1>
@@ -47,16 +47,16 @@
 	<div class="d-flex flex-wrap justify-content-between mt-4 mb-4">
 		<c:forEach  var="enchere" items="${encheres}">
 			<div class="border mt-3">
-				<div>
+<!-- 				<div>
 					<img src="/images/patate.jpeg">
-				</div>
+				</div> -->
 				<div class="p-3">
 					<c:if test="${!empty enchere.getArticle().getNomArticle()}">
 						<p>${enchere.getArticle().getNomArticle() }</p>
 					</c:if>
 
 					<c:if test="${empty enchere.getArticle().getNomArticle()}">
-						<p> Aucun titre </p>
+						<p> Nom : </p>
 					</c:if>
 
 					<c:if test="${enchere.getMontantEnchere() == 0}">

@@ -20,6 +20,6 @@
 	-->
 </head>
 <body>
-<div>test</div>
+<div></div>
 </body>
 </html>

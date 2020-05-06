@@ -1,6 +1,8 @@
 package ihm.servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +29,7 @@ public class ServletAffichageInfosUtilisateur extends HttpServlet
 		HttpSession session = request.getSession();
     	if(session.getAttribute("pseudo") ==null ) 
     	{
-			response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+			response.sendRedirect("/Enchere/Accueil");
     	}
 		else
 		{
@@ -52,12 +54,12 @@ public class ServletAffichageInfosUtilisateur extends HttpServlet
 		HttpSession session = request.getSession();
     	if(session.getAttribute("pseudo") == null ) 
     	{
-			response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+			response.sendRedirect("/Enchere/Accueil");
     	}
 		else
 		{
-			
-			/* rediriger vers modifUtilisateur */
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageModificationProfil.jsp");
+			rd.forward(request, response);
 		}
 	}
 

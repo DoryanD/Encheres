@@ -30,7 +30,7 @@ public class ServletProfilUtilisateur extends HttpServlet
 		HttpSession session = request.getSession();
 		if(session.getAttribute("pseudo") ==null) 
     	{
-			response.sendRedirect("Accueil");
+			response.sendRedirect("/Enchere/Accueil");
     	}
 		else
 		{

@@ -1,6 +1,8 @@
 package ihm.servlets;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class ServletModificationProfil extends HttpServlet
 		HttpSession session = request.getSession();
     	if(session.getAttribute("pseudo") !=null ) 
     	{
-			response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+			response.sendRedirect("/Enchere/Accueil");
     	}
 		else
 		{
@@ -56,7 +58,7 @@ public class ServletModificationProfil extends HttpServlet
 		HttpSession session = request.getSession();
     	if(session.getAttribute("pseudo") !=null ) 
     	{
-			response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+			response.sendRedirect("/Enchere/Accueil");
     	}
 		else
 		{
@@ -106,12 +108,22 @@ public class ServletModificationProfil extends HttpServlet
 				List<Utilisateur> laListe = new ArrayList<>();
 				laListe = instance.selectAll();
 				Boolean existe = false ;
-				ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(pseudo) > 1, 1, 0) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "' AND no_utilisateur != '"+ id2 +"'");
-				existe = result.getInt("result") == 1;
+				ResultSet result = instance.getManagerDAO().DoSQuery("SELECT IF(COUNT(pseudo) > 1, 1, 0) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "' AND no_utilisateur != '"+ id2 +"'");
+				try {
+					existe = result.getInt("result") == 1;
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				if(!existe)
 				{
-					ResultSet result = instance.managerDAO.DoSQuery("SELECT IF(COUNT(email) > 1, 1, 0) as result FROM UTILISATEURS WHERE email = '" + Email + "'AND no_utilisateur != '"+ id2 +"'");
-					existe = result.getInt("result") > 1;
+					ResultSet result2 = instance.getManagerDAO().DoSQuery("SELECT IF(COUNT(email) > 1, 1, 0) as result FROM UTILISATEURS WHERE email = '" + Email + "'AND no_utilisateur != '"+ id2 +"'");
+					try {
+						existe = result2.getInt("result") > 1;
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 
 				if(!existe)

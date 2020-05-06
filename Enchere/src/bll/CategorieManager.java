@@ -17,7 +17,7 @@ public class CategorieManager extends BaseManager<Categorie, CategoriesDAO>
 	
 	private CategorieManager()
 	{
-		this.managerDAO = new CategoriesDAO();
+		this.setManagerDAO(new CategoriesDAO());
 	}
 
 	@Override

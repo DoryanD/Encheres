@@ -22,7 +22,7 @@ public class ServletDeconnexion extends HttpServlet
 	{
 		HttpSession session = request.getSession();
 		session.invalidate();
-		response.sendRedirect("/Encheres/ihm.servlets/Accueil");
+		response.sendRedirect("/Enchere/Accueil");
 	}
 
 	/**

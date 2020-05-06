@@ -17,7 +17,7 @@ public class UtilisateursManager extends BaseManager<Utilisateur, UtilisateursDA
 	
 	private UtilisateursManager()
 	{
-		this.managerDAO = new UtilisateursDAO();
+		this.setManagerDAO(new UtilisateursDAO());
 	}
 
 	@Override

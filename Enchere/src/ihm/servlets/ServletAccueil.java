@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bll.ArticlesVendusManager;
+import bll.CategorieManager;
 import bll.EncheresManager;
 import bo.articlesVendu.ArticlesVendu;
+import bo.categorie.Categorie;
 import bo.enchere.Enchere;
 
 /**
@@ -33,6 +35,10 @@ public class ServletAccueil extends HttpServlet {
 		HttpSession session = request.getSession();
 		EncheresManager leManager = EncheresManager.getInstance();
 		ArticlesVendusManager deuxiemeManager = ArticlesVendusManager.getInstance();
+		CategorieManager troisiemeManager = CategorieManager.getInstance();
+        List<Categorie> listeCategorie = new ArrayList<>();
+        listeCategorie = troisiemeManager.selectAll();
+        request.setAttribute("listeCategorie", listeCategorie);
 		List<Enchere> lesEncheresPasFiltre = new ArrayList<>();
 		List<Enchere> lesEncheresFiltre = new ArrayList<>();
 		lesEncheresPasFiltre = leManager.selectAll();

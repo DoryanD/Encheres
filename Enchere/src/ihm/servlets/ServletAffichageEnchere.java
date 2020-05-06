@@ -1,0 +1,123 @@
+package ihm.servlets;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import bll.ArticlesVendusManager;
+import bll.EncheresManager;
+import bll.RetraitsManager;
+import bll.UtilisateursManager;
+import bo.articlesVendu.ArticlesVendu;
+import bo.enchere.Enchere;
+import bo.retrait.Retrait;
+import bo.utilisateur.Utilisateur;
+import utils.Exceptions.BLLException;
+
+/**
+ * Servlet implementation class ServletAffichageEnchere
+ */
+@WebServlet("/AffichageEnchere")
+public class ServletAffichageEnchere extends HttpServlet 
+{
+	private static final long serialVersionUID = 1L;
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+		if (request.getAttribute("IdEnchere") != null)
+		{
+			EncheresManager PremierManager = EncheresManager.getInstance();
+			ArticlesVendusManager DeuxiemeManager = ArticlesVendusManager.getInstance();
+			RetraitsManager TroisiemeManager = RetraitsManager.getInstance();
+			UtilisateursManager QuatriemeManager = UtilisateursManager.getInstance();
+			int noEnchere = Integer.parseInt((String) request.getAttribute("IdEnchere"));
+			HttpSession session = request.getSession();
+			session.setAttribute("IdEnchere", noEnchere);
+			Enchere lenchere = PremierManager.get(noEnchere);
+			int noArticle = lenchere.getNo_article();
+			ArticlesVendu larticle = DeuxiemeManager.get(noArticle);
+			List<Retrait> listeRetraits = new ArrayList<>();
+			listeRetraits = TroisiemeManager.selectAll();
+			Retrait LeRetrait = null;
+			for (Retrait retrait : listeRetraits) 
+			{
+				if(retrait.getNo_article() == noArticle)
+				{
+					LeRetrait = retrait;
+				}
+			}
+			int noVendeur = lenchere.getNo_utilisateur();
+			Utilisateur lutilisateur = QuatriemeManager.get(noVendeur);
+			request.setAttribute("idEnchere", lenchere.GetId());
+			request.setAttribute("idArticle", larticle.GetId());
+			request.setAttribute("idUtilisateur", lutilisateur.GetId());
+			request.setAttribute("Description", larticle.getDescription());
+			request.setAttribute("NomArticle", larticle.getNom_article());
+			request.setAttribute("Categorie", larticle.getNo_categorie());
+			request.setAttribute("MeilleurOffre", lenchere.getMontant_enchere());
+			request.setAttribute("MiseAPrix", larticle.getPrix_initial());
+			request.setAttribute("DateFin", larticle.getDate_fin_encheres());
+			request.setAttribute("Rue", LeRetrait.getRue());
+			request.setAttribute("CP", LeRetrait.getCode_postal());
+			request.setAttribute("Ville", LeRetrait.getVille());
+			request.setAttribute("Vendeur", lutilisateur.getPseudo());
+			/* AFFICHER PAGE AFFICHAGE ENCHERE */
+		}
+		else
+		{
+			/* REDIRECTION VERS ACCUEIL */
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+		HttpSession session = request.getSession();
+		if(session.getAttribute("pseudo") != null)
+		{
+			if(request.getAttribute("montant") != null)
+			{
+				float montant = (float) request.getAttribute("montant");
+				if(montant > (float) request.getAttribute("MeilleurOffre"))
+				{
+					int idEnchere = (int) request.getAttribute("idEnchere");
+					int idUtilisateur = (int) request.getAttribute("idEnchere");
+					int idArticle = (int) request.getAttribute("idEnchere");
+					Date DateEnchere = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+					Enchere ModifEnchere = new Enchere(idEnchere,idUtilisateur,idArticle,DateEnchere,montant);
+					EncheresManager ManagerUpdate = EncheresManager.getInstance();
+					try
+					{
+						ManagerUpdate.update(ModifEnchere);
+					} 
+					catch (BLLException e) 
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+			else
+			{
+				/*Rediriger sur cette servlet en get*/
+			}
+		}
+		else
+		{
+			/*Rediriger vers accueil*/
+		}
+	}
+
+}

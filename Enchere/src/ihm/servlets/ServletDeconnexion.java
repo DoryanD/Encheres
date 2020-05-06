@@ -21,11 +21,7 @@ public class ServletDeconnexion extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		HttpSession session = request.getSession();
-		session = request.getSession(false);
-		
-        if (session != null)
-          session.setMaxInactiveInterval(1);
-        
+		session.invalidate();
         response.sendRedirect("/Enchere/Accueil");
 	}
 

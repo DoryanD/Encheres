@@ -31,7 +31,7 @@
 					value="${session.pseudo }"> <input class="mb-2" type="text"
 					name="prenom" value="${session.prenom }"> <input
 					class="mb-2" type="tel" name="tel" value="${session.tel }">
-				<input class="mb-2" type="text" name="codePostal"
+				<input class="mb-2" type="text" name="cp"
 					value="${session.codePostal }"> <input class="mb-2"
 					type="password" name="mdp"> <input class="mb-3"
 					type="password" name="mdpconfirm">

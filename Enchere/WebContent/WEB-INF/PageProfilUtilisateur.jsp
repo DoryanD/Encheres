@@ -35,7 +35,7 @@
 		<p>${session.Email }</p>
 		<p>${session.tel }</p>
 		<p>${session.Rue }</p>
-		<p>${session.codePostal }</p>
+		<p>${session.cp }</p>
 		<p>${session.ville }</p>
 	</div>
 </div>

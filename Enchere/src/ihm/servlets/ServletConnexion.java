@@ -64,15 +64,11 @@ public class ServletConnexion extends HttpServlet
 						session.setAttribute("ville", utilisateur.getVille());
 						session.setAttribute("credit", utilisateur.getCredit());
 						session.setAttribute("administrateur", utilisateur.getAdministrateur());
-						
-						RequestDispatcher rd = request.getRequestDispatcher("/Enchere/Accueil");
-						rd.forward(request, response);
 					}
-					else
-					{
-						RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageConnexion.jsp");
-						rd.forward(request, response);
-					}
+				}
+				if(session.getAttribute("pseudo")!= null) {
+					RequestDispatcher rd = request.getRequestDispatcher("/Accueil");
+		        	rd.forward(request, response);
 				}
 			}
 			else

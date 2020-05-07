@@ -46,16 +46,7 @@ public class ServletAccueil extends HttpServlet {
         UtilisateursManager userManager = UtilisateursManager.getInstance();
         List<Utilisateur> listeUtilisateur = new ArrayList<>();
         listeUtilisateur = userManager.selectAll();
-        
-        for (ArticlesVendu article : listeArticlesNonFiltre) {
-			article.getDate_fin_encheres();
-			
-			article.getNo_utilisateur();
-			article.getPrix_vente();
-			String nomVendeur = userManager.get(article.getNo_utilisateur()).getPseudo();
-//			request.setParameter("nomUtilisateur",nomVendeur);
-System.out.println(article.getNom_article());
-		}
+
         	listeCategorie = troisiemeManager.selectAll();
         	request.setAttribute("listeArticlesNonFiltre", listeArticlesNonFiltre);
         	request.setAttribute("listeCategorie", listeCategorie);

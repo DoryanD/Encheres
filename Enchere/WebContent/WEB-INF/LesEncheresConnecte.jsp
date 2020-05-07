@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page  language="java"
+          contentType="text/html; charset=UTF-8"
+          pageEncoding="UTF-8"
+  %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="bll.UtilisateursManager" %>
 
@@ -25,7 +27,6 @@
 		class="nav-link">Déconnexion</a> </nav>
 	<div class="jumbotron text-center">
 		<h1>Liste des enchères</h1>
-
 	</div>
 	<div class="container">
 		<form action="ListeEnchereConnecte" method="POST">

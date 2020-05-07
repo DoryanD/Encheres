@@ -1,6 +1,7 @@
 package ihm.servlets;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bll.ArticlesVendusManager;
+import bll.CategorieManager;
+import bll.EncheresManager;
 import bll.UtilisateursManager;
+import bo.articlesVendu.ArticlesVendu;
+import bo.categorie.Categorie;
+import bo.enchere.Enchere;
 import bo.utilisateur.Utilisateur;
+import utils.Exceptions.BLLException;
 
 /**
  * Servlet implementation class ServletConnexion
  */
-@WebServlet("/Connexion")
+@WebServlet(urlPatterns= {"/index", "/Connexion"})
 public class ServletConnexion extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
@@ -52,6 +60,7 @@ public class ServletConnexion extends HttpServlet
 							response.addCookie(cookieMDP);
 							response.addCookie(cookiePseudo);
 						}
+						
 						session.setAttribute("id", utilisateur.GetId());
 						session.setAttribute("pseudo", utilisateur.getPseudo());
 						session.setAttribute("prenom", utilisateur.getPrenom());

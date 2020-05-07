@@ -17,7 +17,7 @@ import utils.Exceptions.BLLException;
 /**
  * Servlet implementation class ServletAffichageInfosUtilisateur
  */
-@WebServlet("/AffichageInfosUtilisateur")
+@WebServlet("/PageAffichageInfosUtilisateur")
 public class ServletAffichageInfosUtilisateur extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
@@ -27,9 +27,21 @@ public class ServletAffichageInfosUtilisateur extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		HttpSession session = request.getSession();
-    	if(session.getAttribute("pseudo") ==null ) 
+		request.setAttribute("affichageButton", request.getParameter("idVendeur") == null);
+    	if(session.getAttribute("pseudo") == null || request.getParameter("idVendeur") != null) 
     	{
-			response.sendRedirect("/Enchere/Accueil");
+    		UtilisateursManager userManager = UtilisateursManager.getInstance();
+    		Utilisateur user = userManager.get(Integer.parseInt(request.getParameter("idVendeur")));
+			request.setAttribute("id", user.GetId());
+			request.setAttribute("pseudo", user.getPseudo());
+			request.setAttribute("prenom", user.getPrenom());
+			request.setAttribute("tel", user.getTelephone());
+			request.setAttribute("cp", user.getCode_postal());
+			request.setAttribute("nom", user.getNom());
+			request.setAttribute("Email", user.getEmail());
+			request.setAttribute("Rue", user.getRue());
+			request.setAttribute("ville", user.getVille());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/PageAffichageInfosUtilisateur.jsp").forward(request, response);
     	}
 		else
 		{
@@ -42,7 +54,7 @@ public class ServletAffichageInfosUtilisateur extends HttpServlet
 				request.setAttribute("Email", session.getAttribute("Email"));
 				request.setAttribute("Rue", session.getAttribute("Rue"));
 				request.setAttribute("ville", session.getAttribute("ville"));
-				this.getServletContext().getRequestDispatcher("/WEB-INF/PageAffichageInfosProfil.jsp").forward(request, response);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/PageAffichageInfosUtilisateur.jsp").forward(request, response);
 		}
 	}
 

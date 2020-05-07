@@ -13,7 +13,7 @@ public class ArticlesVendusDAO extends BaseDAO<ArticlesVendu>
 
 	public ArticlesVendusDAO()
 	{
-		this.setTableName(this.getClass().getSimpleName().replace("DAO", "").toUpperCase());
+		this.setTableName("ARTICLES_VENDUS");
 	    this.setTableIdColumn("no_article");
 	}
 	

@@ -10,5 +10,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/Users/Alexandre/Downloads/javax.mail.jar" sourcepath="C:/Users/Alexandre/Downloads/javamail-JAVAMAIL-1_6_2.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/enchere-master"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

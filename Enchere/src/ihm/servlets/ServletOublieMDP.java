@@ -46,17 +46,17 @@ public class ServletOublieMDP extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		if(request.getAttribute("email") != null && request.getAttribute("mdp") != null)
+		if(request.getParameter("email") != null && request.getParameter("mdp") != null)
     	{
 			UtilisateursManager leManager = UtilisateursManager.getInstance();
 			List<Utilisateur> laListe = leManager.selectAll();
-			String email = (String) request.getAttribute("email");
+			String email = (String) request.getParameter("email");
 			for (Utilisateur utilisateur : laListe) 
 			{
 				
 				if(utilisateur.getEmail().equals(email))
 				{
-					String mdp = (String) request.getAttribute("mdp");
+					String mdp = (String) request.getParameter("mdp");
 					utilisateur.setMot_de_passe(mdp);
 					try 
 					{

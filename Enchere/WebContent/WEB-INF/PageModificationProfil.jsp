@@ -7,15 +7,15 @@
 <!--Bootsrap 4 CDN-->
 <link rel="stylesheet" href="Assets/bootstrap/css/bootstrap.min.css">
 <script src="Assets/boostrap/js/bootstrap.min.js"></script>
-<title>Eni enchere - ${session.pseudo }</title>
+<title>Eni enchere - <%=request.getSession().getAttribute("pseudo") %></title>
 </head>
 <body>
 	<div class="jumbotron">
 		<div class="container">
-			<a href="Home" class="h1">ENI - Enchères</a>
+			<a href="/Enchere/Accueil" class="h1">ENI - Enchères</a>
 		</div>
 	</div>
-	<form action="ModifierProfil" method="POST">
+	<form action="ModificationProfil" method="POST">
 		<div class="container d-flex justify-content-around pt-5 mt-5 mb-5">
 			<div class="w-10">
 				<p>Pseudo :</p>
@@ -28,14 +28,14 @@
 			</div>
 			<div class="text-center d-flex flex-column w-10">
 				<input class="mb-2" type="text" name="pseudo"
-					value="${session.pseudo }"> <input class="mb-2" type="text"
-					name="prenom" value="${session.prenom }"> <input
-					class="mb-2" type="tel" name="tel" value="${session.tel }">
+					value="<%=request.getSession().getAttribute("pseudo") %>"> <input class="mb-2" type="text"
+					name="prenom" value="<%=request.getSession().getAttribute("prenom") %>"> <input
+					class="mb-2" type="tel" name="tel" value="<%=request.getSession().getAttribute("tel") %>">
 				<input class="mb-2" type="text" name="cp"
-					value="${session.codePostal }"> <input class="mb-2"
+					value="<%=request.getSession().getAttribute("cp") %>"> <input class="mb-2"
 					type="password" name="mdp"> <input class="mb-3"
-					type="password" name="mdpconfirm">
-				<p class="mb-2">${session.credit }</p>
+					type="password" name="newmdp">
+				<p class="mb-2">0</p>
 			</div>
 			<div class="w-10">
 				<p>Nom :</p>
@@ -47,22 +47,22 @@
 			</div>
 			<div class="text-center d-flex flex-column w-10">
 				<input class="mb-2" type="text" name="nom"
-					value="${utilisateur.nom }"> <input class="mb-2"
-					type="email" name="Email" value="${session.Email }"> <input
-					class="mb-2" type="text" name="Rue" value="${session.Rue }">
+					value="<%=request.getSession().getAttribute("nom") %>"> <input class="mb-2"
+					type="email" name="Email" value="<%=request.getSession().getAttribute("Email") %>"> <input
+					class="mb-2" type="text" name="Rue" value="<%=request.getSession().getAttribute("Rue") %>">
 				<input class="mb-2" type="text" name="ville"
-					value="${session.ville }">
+					value="<%=request.getSession().getAttribute("ville") %>">
 				<p style="visibility: hidden">espace</p>
-				<input class="mb-2" type="password" name="mdpconfirm"> <input
-					class="mb-2" type="hidden" name="utilisateur"
-					value="${session.id }">
+				<input class="mb-2" type="password" name="mdpconfirm">
+				 <input	class="mb-2" type="hidden" name="id"
+					value="<%=request.getSession().getAttribute("id") %>">
 			</div>
 		</div>
 
 		<div class="button d-flex justify-content-center">
 			<button class="btn btn-outline-secondary mr-5" type="submit">Enregistrer</button>
 			<a class="btn btn-outline-secondary ml-5"
-				href="SupprimerCompte?id=${session.id }">Supprimer mon compte</a>
+				href="SupprimerCompte?id=<%=request.getSession().getAttribute("id")%>">Supprimer mon compte</a>
 		</div>
 	</form>
 </body>

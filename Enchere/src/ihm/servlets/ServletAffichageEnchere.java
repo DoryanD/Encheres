@@ -36,17 +36,25 @@ public class ServletAffichageEnchere extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		if (request.getAttribute("IdEnchere") != null)
+		HttpSession session = request.getSession();
+		
+		if (request.getParameter("idArticle") != null)
 		{
+			int noArticle = Integer.parseInt(request.getParameter("idArticle"));
 			EncheresManager PremierManager = EncheresManager.getInstance();
+			List<Enchere> lesEncheres = new ArrayList<>();
+			lesEncheres = PremierManager.selectAll();
+			Enchere lenchere = null;
+			for (Enchere uneEnchere : lesEncheres)
+			{
+				if(uneEnchere.getNo_article() == noArticle && (lenchere == null || (lenchere != null && lenchere.getMontant_enchere() < uneEnchere.getMontant_enchere())))
+				{
+					lenchere = uneEnchere;
+				}
+			}
 			ArticlesVendusManager DeuxiemeManager = ArticlesVendusManager.getInstance();
 			RetraitsManager TroisiemeManager = RetraitsManager.getInstance();
 			UtilisateursManager QuatriemeManager = UtilisateursManager.getInstance();
-			int noEnchere = Integer.parseInt((String) request.getAttribute("IdEnchere"));
-			HttpSession session = request.getSession();
-			session.setAttribute("IdEnchere", noEnchere);
-			Enchere lenchere = PremierManager.get(noEnchere);
-			int noArticle = lenchere.getNo_article();
 			ArticlesVendu larticle = DeuxiemeManager.get(noArticle);
 			List<Retrait> listeRetraits = new ArrayList<>();
 			listeRetraits = TroisiemeManager.selectAll();
@@ -59,6 +67,7 @@ public class ServletAffichageEnchere extends HttpServlet
 				}
 			}
 			int noVendeur = lenchere.getNo_utilisateur();
+			System.out.println(noVendeur);
 			Utilisateur lutilisateur = QuatriemeManager.get(noVendeur);
 			request.setAttribute("idEnchere", lenchere.GetId());
 			request.setAttribute("idArticle", larticle.GetId());
@@ -91,14 +100,14 @@ public class ServletAffichageEnchere extends HttpServlet
 		HttpSession session = request.getSession();
 		if(session.getAttribute("pseudo") != null)
 		{
-			if(request.getAttribute("montant") != null)
+			if(request.getParameter("montant") != null)
 			{
-				float montant = (float) request.getAttribute("montant");
-				if(montant > (float) request.getAttribute("MeilleurOffre"))
+				float montant = Float.parseFloat(request.getParameter("montant"));
+				if(montant > Float.parseFloat(request.getParameter("MeilleurOffre")))
 				{
-					int idEnchere = (int) request.getAttribute("idEnchere");
-					int idUtilisateur = (int) request.getAttribute("idEnchere");
-					int idArticle = (int) request.getAttribute("idEnchere");
+					int idEnchere = Integer.parseInt(request.getParameter("idEnchere"));
+					int idUtilisateur = Integer.parseInt(request.getParameter("idEnchere"));
+					int idArticle =Integer.parseInt(request.getParameter("idEnchere"));
 					Date DateEnchere = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 					Enchere ModifEnchere = new Enchere(idEnchere,idUtilisateur,idArticle,DateEnchere,montant);
 					EncheresManager ManagerUpdate = EncheresManager.getInstance();

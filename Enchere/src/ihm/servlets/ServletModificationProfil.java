@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -31,10 +32,10 @@ public class ServletModificationProfil extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		HttpSession session = request.getSession();
-    	if(session.getAttribute("pseudo") !=null ) 
-    	{
+		if(session.getAttribute("pseudo") == null) 
+		{
 			response.sendRedirect("/Enchere/Accueil");
-    	}
+		}
 		else
 		{
 			request.setAttribute("id", session.getAttribute("id"));
@@ -56,13 +57,13 @@ public class ServletModificationProfil extends HttpServlet
 	{
 		boolean modifier = false;
 		HttpSession session = request.getSession();
-    	if(session.getAttribute("pseudo") !=null ) 
-    	{
+		if(session.getAttribute("pseudo") == null) 
+		{
 			response.sendRedirect("/Enchere/Accueil");
-    	}
+		}
 		else
 		{
-			String id = (String) session.getAttribute("id");
+			String id = "" + session.getAttribute("id");
 			String pseudo = (String) session.getAttribute("pseudo");
 			String prenom = (String) session.getAttribute("prenom");
 			String tel = (String) session.getAttribute("tel");
@@ -78,13 +79,15 @@ public class ServletModificationProfil extends HttpServlet
 			}
 			if(modifier == true)
 			{
-				id = (String) request.getParameter("id");
+				id = "" + request.getParameter("id");
 				pseudo = (String) request.getParameter("pseudo");
 				prenom = (String) request.getParameter("prenom");
 				tel = (String) request.getParameter("tel");
 				cp = (String) request.getParameter("cp");
 				String mdp = (String) request.getParameter("mdp");
-			    nom = (String) request.getParameter("nom");
+				String newmdp = (String) request.getParameter("newmdp");
+				String mdpconfirm = (String) request.getParameter("mdpconfirm");
+				nom = (String) request.getParameter("nom");
 				Email = (String) request.getParameter("Email");
 				Rue = (String) request.getParameter("Rue");
 				ville = (String) request.getParameter("ville");
@@ -100,51 +103,58 @@ public class ServletModificationProfil extends HttpServlet
 				session.setAttribute("Rue", Rue);
 				session.setAttribute("ville", ville);
 				session.setAttribute("credit", credit);
+
 				int id2 = Integer.parseInt(request.getParameter("id"));
 				session.setAttribute("administrateur", session.getAttribute("administrateur"));
 				Boolean administrateur = (Boolean) session.getAttribute("administrateur");
-				Utilisateur UtiModifier = new Utilisateur(id2,pseudo,nom,prenom,Email,tel,Rue,cp,ville,mdp,credit,administrateur);
-				UtilisateursManager instance = UtilisateursManager.getInstance();
-				List<Utilisateur> laListe = new ArrayList<>();
-				laListe = instance.selectAll();
-				Boolean existe = false ;
-				ResultSet result = instance.getManagerDAO().DoSQuery("SELECT IF(COUNT(pseudo) > 1, 1, 0) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "' AND no_utilisateur != '"+ id2 +"'");
-				try {
-					existe = result.getInt("result") == 1;
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if(!existe)
+				if(!newmdp.equals(mdpconfirm))
 				{
-					ResultSet result2 = instance.getManagerDAO().DoSQuery("SELECT IF(COUNT(email) > 1, 1, 0) as result FROM UTILISATEURS WHERE email = '" + Email + "'AND no_utilisateur != '"+ id2 +"'");
-					try {
-						existe = result2.getInt("result") > 1;
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+					//nouveau mdp et nouveau mdp confirm sont !=,
+					//afficher une erreur en lien
+				}else {
 
-				if(!existe)
-				{
-					try 
-					{
-						instance.update(UtiModifier);
-						Cookie cookieMDP = new Cookie("mdp",mdp);
-						Cookie cookiePseudo = new Cookie("pseudo",pseudo);
-						cookieMDP.setMaxAge(1000000000);
-						cookiePseudo.setMaxAge(1000000000);
-						response.addCookie(cookieMDP);
-						response.addCookie(cookiePseudo);
-					} 
-					catch (BLLException e) 
-					{
-						e.printStackTrace();
+
+					Utilisateur UtiModifier = new Utilisateur(id2,pseudo,nom,prenom,Email,tel,Rue,cp,ville,newmdp,credit,administrateur);				UtilisateursManager instance = UtilisateursManager.getInstance();
+					List<Utilisateur> laListe = new ArrayList<>();
+					laListe = instance.selectAll();
+					Boolean existe = false ;
+					ResultSet result = instance.getManagerDAO().DoSQuery("SELECT COUNT(pseudo) as result FROM UTILISATEURS WHERE pseudo = '" + pseudo + "' AND no_utilisateur != '"+ id2 +"'");
+					try {
+						existe = result.getInt("result") > 1;
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
+					if(!existe)
+					{
+						ResultSet result2 = instance.getManagerDAO().DoSQuery("SELECT COUNT(email) as result FROM UTILISATEURS WHERE email = '" + Email + "'AND no_utilisateur != '"+ id2 +"'");
+						try {
+							existe = result2.getInt("result") > 1;
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					if(!existe)
+					{
+						try 
+						{
+							instance.update(UtiModifier);
+							Cookie cookieMDP = new Cookie("mdp",newmdp);
+							Cookie cookiePseudo = new Cookie("pseudo",pseudo);
+							cookieMDP.setMaxAge(1000000000);
+							cookiePseudo.setMaxAge(1000000000);
+							response.addCookie(cookieMDP);
+							response.addCookie(cookiePseudo);
+						} 
+						catch (BLLException e) 
+						{
+							e.printStackTrace();
+						}
+					}
+					this.getServletContext().getRequestDispatcher("/WEB-INF/PageAffichageInfosUtilisateur.jsp").forward(request, response);
 				}
-				
-				this.getServletContext().getRequestDispatcher("/WEB-INF/PageProfilUtilisateur.jsp").forward(request, response);
 			}
 		}
 	}

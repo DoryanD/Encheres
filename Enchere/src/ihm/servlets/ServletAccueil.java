@@ -17,9 +17,11 @@ import javax.servlet.http.HttpSession;
 import bll.ArticlesVendusManager;
 import bll.CategorieManager;
 import bll.EncheresManager;
+import bll.UtilisateursManager;
 import bo.articlesVendu.ArticlesVendu;
 import bo.categorie.Categorie;
 import bo.enchere.Enchere;
+import bo.utilisateur.Utilisateur;
 
 /**
  * Servlet implementation class Accueil
@@ -36,108 +38,116 @@ public class ServletAccueil extends HttpServlet {
 		EncheresManager leManager = EncheresManager.getInstance();
 		ArticlesVendusManager deuxiemeManager = ArticlesVendusManager.getInstance();
 		CategorieManager troisiemeManager = CategorieManager.getInstance();
-        List<Categorie> listeCategorie = new ArrayList<>();
-        listeCategorie = troisiemeManager.selectAll();
-        request.setAttribute("listeCategorie", listeCategorie);
-		List<Enchere> lesEncheresPasFiltre = new ArrayList<>();
-		List<Enchere> lesEncheresFiltre = new ArrayList<>();
-		lesEncheresPasFiltre = leManager.selectAll();
-		Date dateAuj = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+		List<ArticlesVendu> listeArticlesNonFiltre = new ArrayList<>();
+		List<ArticlesVendu> listeArticlesFiltre = new ArrayList<>();
+		listeArticlesNonFiltre = deuxiemeManager.selectAll();
+        	List<Categorie> listeCategorie = new ArrayList<>();
+        	
+        UtilisateursManager userManager = UtilisateursManager.getInstance();
+        List<Utilisateur> listeUtilisateur = new ArrayList<>();
+        listeUtilisateur = userManager.selectAll();
+        
+        for (ArticlesVendu article : listeArticlesNonFiltre) {
+			article.getDate_fin_encheres();
+			
+			article.getNo_utilisateur();
+			article.getPrix_vente();
+			String nomVendeur = userManager.get(article.getNo_utilisateur()).getPseudo();
+//			request.setParameter("nomUtilisateur",nomVendeur);
+System.out.println(article.getNom_article());
+		}
+        	listeCategorie = troisiemeManager.selectAll();
+        	request.setAttribute("listeArticlesNonFiltre", listeArticlesNonFiltre);
+        	request.setAttribute("listeCategorie", listeCategorie);
+		Date dateAuj = new java.sql.Date(Calendar.getInstance().getTime().getTime());		
+			
 		if(request.getParameter("enchOuv") != null)
 		{
-			for (Enchere enchere : lesEncheresPasFiltre) 
+			for (ArticlesVendu Article : listeArticlesNonFiltre) 
 			{
-				ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
-				if(larticle.getDate_debut_encheres().before(dateAuj) && larticle.getDate_fin_encheres().after(dateAuj))
+				if(Article.getDate_debut_encheres().before(dateAuj) && Article.getDate_fin_encheres().after(dateAuj))
 				{
-					lesEncheresFiltre.add(enchere);
+					listeArticlesFiltre.add(Article);
 				}
 			}
 		}
 		if(request.getParameter("mesEnchEnCours") != null)
 		{
-			for (Enchere enchere : lesEncheresPasFiltre) 
+			for (ArticlesVendu Article : listeArticlesNonFiltre) 
 			{
-				ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
-				if(larticle.getDate_debut_encheres().before(dateAuj) && larticle.getDate_fin_encheres().after(dateAuj) && enchere.getNo_utilisateur().equals(session.getAttribute("id")))
+				if(Article.getDate_debut_encheres().before(dateAuj) && Article.getDate_fin_encheres().after(dateAuj) && Article.getNo_utilisateur().equals(session.getAttribute("id")))
 				{
-					lesEncheresFiltre.add(enchere);			
+					listeArticlesFiltre.add(Article);			
 				}
 			}
 		}
 		if(request.getParameter("mesEnchRemp") != null)
 		{
-			for (Enchere enchere : lesEncheresPasFiltre) 
-			{
-				ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
-				if(larticle.getDate_fin_encheres().before(dateAuj) && enchere.getNo_utilisateur().equals(session.getAttribute("id")))
+			for (ArticlesVendu Article : listeArticlesNonFiltre)  
+			{	
+				if(Article.getDate_fin_encheres().before(dateAuj) && Article.getNo_utilisateur().equals(session.getAttribute("id")))
 				{
-					lesEncheresFiltre.add(enchere);			
+					listeArticlesFiltre.add(Article);			
 				}
 			}
 		}
 		if(request.getParameter("venEnCours") != null)
 		{
-			for (Enchere enchere : lesEncheresPasFiltre) 
+			for (ArticlesVendu Article : listeArticlesNonFiltre)  
 			{
-				ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
-				if(larticle.getDate_debut_encheres().before(dateAuj) && larticle.getDate_fin_encheres().after(dateAuj) && larticle.getNo_utilisateur().equals(session.getAttribute("id")))
+				if(Article.getDate_debut_encheres().before(dateAuj) && Article.getDate_fin_encheres().after(dateAuj) && Article.getNo_utilisateur().equals(session.getAttribute("id")))
 				{
-					lesEncheresFiltre.add(enchere);			
+					listeArticlesFiltre.add(Article);			
 				}
 			}
 		}
 		if(request.getParameter("venNonDeb") != null)
 		{
-			for (Enchere enchere : lesEncheresPasFiltre) 
+			for (ArticlesVendu Article : listeArticlesNonFiltre) 
 			{
-				ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
-				if(larticle.getDate_debut_encheres().before(dateAuj) && larticle.getDate_fin_encheres().after(dateAuj) && larticle.getNo_utilisateur().equals(session.getAttribute("id")))
+				if(Article.getDate_debut_encheres().before(dateAuj) && Article.getDate_fin_encheres().after(dateAuj) && Article.getNo_utilisateur().equals(session.getAttribute("id")))
 				{
-					lesEncheresFiltre.add(enchere);			
+					listeArticlesFiltre.add(Article);			
 				}
 			}
 		}
 		if(request.getParameter("venTerm") != null)
 		{
-				for (Enchere enchere : lesEncheresPasFiltre) 
+				for (ArticlesVendu Article : listeArticlesNonFiltre) 
 				{
-					ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
-					if( larticle.getDate_fin_encheres().before(dateAuj) && larticle.getNo_utilisateur().equals(session.getAttribute("id")))
+					if( Article.getDate_fin_encheres().before(dateAuj) && Article.getNo_utilisateur().equals(session.getAttribute("id")))
 					{
-						lesEncheresFiltre.add(enchere);			
+						listeArticlesFiltre.add(Article);			
 					}
 				}
 		}
 		if(request.getParameter("categorie") != null)
 		{
-			for (Enchere enchere : lesEncheresPasFiltre) 
+			for (ArticlesVendu Article : listeArticlesNonFiltre)  
 			{
-				ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
 				int nocategorie = Integer.parseInt(request.getParameter("categorie"));
-				if(larticle.getNo_categorie() == nocategorie)
+				if(Article.getNo_categorie() == nocategorie)
 				{
-					lesEncheresFiltre.add(enchere);			
+					listeArticlesFiltre.add(Article);			
 				}
 			}
 		}
 		if(request.getParameter("filtre") != null)
 		{
 			String filtre = request.getParameter("filtre");
-			for (Enchere enchere : lesEncheresPasFiltre) 
+			for (ArticlesVendu Article : listeArticlesNonFiltre) 
 			{
-				ArticlesVendu larticle = deuxiemeManager.get(enchere.getNo_article());
-				if(larticle.getNom_article().contains(filtre))
+				if(Article.getNom_article().contains(filtre))
 				{
-					lesEncheresFiltre.add(enchere);			
+					listeArticlesFiltre.add(Article);			
 				}
 			}
 		}
-		if(lesEncheresFiltre.isEmpty())
+		if(listeArticlesFiltre.isEmpty())
 		{
-			lesEncheresFiltre = lesEncheresPasFiltre;
+			listeArticlesFiltre = listeArticlesNonFiltre;
 		}
-		request.setAttribute("listeEncheres", lesEncheresFiltre);
+		request.setAttribute("listeArticles",listeArticlesFiltre);
     	if(session.getAttribute("pseudo")!=null) 
     	{
     		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/LesEncheresConnecte.jsp");

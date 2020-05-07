@@ -7,6 +7,26 @@
 <title>Insert title here</title>
 </head>
 <body>
+<p>${idEnchere}</p>
+<p>${idArticle}</p>
+<p>${idUtilisateur}</p>
+<p>${Description}</p>
+<p>${NomArticle}</p>
+<p>${Categorie}</p>
+<p>${MeilleurOffre}</p>
+<p>${MiseAPrix}</p>
+<p>${DateFin}</p>
+<p>${Rue}</p>
+<p>${CP}</p>
+<p>${Ville}</p>
+<p>${Vendeur}</p>
+
+
+
+
+
+
+
 
 </body>
 </html>

@@ -246,6 +246,9 @@ public class DAL
                     case BOOLEAN:
                         state.setBoolean(i + 1, (Boolean) p.getValue());
                         break;
+                    case DATE:
+                    	  state.setDate(i + 1, (Date) p.getValue());
+                    	  break;
                     case NULL:
                     	break;
                 }
